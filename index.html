@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgentHub | Panel de Administracion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class'
+      };
+    </script>
+  </head>
+  <body class="h-full bg-gradient-to-br from-amber-50 via-cyan-50 to-emerald-50 text-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 dark:text-slate-100">
+    <div class="min-h-full lg:flex">
+      <aside class="w-full border-b border-slate-200/80 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90 lg:min-h-screen lg:w-64 lg:shrink-0 lg:border-b-0 lg:border-r">
+        <div class="flex items-center justify-between px-6 py-5 lg:block">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-700 dark:text-cyan-300">AgentHub</p>
+            <h1 class="mt-2 text-lg font-semibold">Control Center</h1>
+            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">User Admin Console</p>
+          </div>
+          <button
+            id="sidebar-toggle"
+            type="button"
+            class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-300 text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800 lg:hidden"
+            aria-label="Mostrar menu"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm1 4a1 1 0 100 2h12a1 1 0 100-2H4z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
+
+        <nav id="sidebar-nav" class="hidden border-t border-slate-200 px-3 pb-6 pt-4 dark:border-slate-800 lg:block lg:border-t-0">
+          <ul class="space-y-1.5" role="list">
+            <li>
+              <button type="button" data-section-target="dashboard" class="section-trigger flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition">
+                <span class="h-2 w-2 rounded-full bg-current"></span>
+                Dashboard
+              </button>
+            </li>
+            <li>
+              <button type="button" data-section-target="usuarios" class="section-trigger flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition">
+                <span class="h-2 w-2 rounded-full bg-current"></span>
+                Gestion de Usuarios
+              </button>
+            </li>
+            <li>
+              <button type="button" data-section-target="agentes" class="section-trigger flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition">
+                <span class="h-2 w-2 rounded-full bg-current"></span>
+                Gestion de Agentes
+              </button>
+            </li>
+            <li>
+              <button type="button" data-section-target="skills" class="section-trigger flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition">
+                <span class="h-2 w-2 rounded-full bg-current"></span>
+                Skills
+              </button>
+            </li>
+            <li>
+              <button type="button" data-section-target="contratos" class="section-trigger flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition">
+                <span class="h-2 w-2 rounded-full bg-current"></span>
+                Contrataciones
+              </button>
+            </li>
+            <li>
+              <button type="button" data-section-target="errores" class="section-trigger flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition">
+                <span class="h-2 w-2 rounded-full bg-current"></span>
+                Log de Errores
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="flex min-h-screen flex-1 flex-col">
+        <header class="border-b border-slate-200/80 bg-white/80 px-4 py-4 backdrop-blur dark:border-slate-800 dark:bg-slate-950/75 sm:px-6 lg:px-8">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="w-full max-w-md rounded-xl border border-slate-200 bg-slate-100/90 px-4 py-2 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-400">
+              Buscar clientes, agentes, skills o incidentes...
+            </div>
+
+            <div class="flex items-center gap-3">
+              <button id="theme-toggle" type="button" class="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:-translate-y-0.5 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800">
+                Alternar modo
+              </button>
+              <div class="inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300">
+                <span class="inline-block h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+                Admin Online
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+          <section data-section="dashboard" class="content-section space-y-6">
+            <div>
+              <h2 class="text-2xl font-semibold tracking-tight">Dashboard</h2>
+              <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Pulso financiero y operativo de la plataforma AgentHub.</p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <article class="rounded-xl border border-emerald-200 bg-white p-5 shadow-sm transition hover:shadow-md dark:border-emerald-900/50 dark:bg-slate-800">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <p class="text-sm font-medium text-slate-600 dark:text-slate-300">Ingresos Totales</p>
+                    <p class="mt-2 text-2xl font-semibold text-emerald-700 dark:text-emerald-300">$48,250.00</p>
+                  </div>
+                  <span class="rounded-lg bg-emerald-100 p-2 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5H2v-5zM8 8a1 1 0 011-1h2a1 1 0 011 1v8H8V8zM14 5a1 1 0 011-1h2a1 1 0 011 1v11h-4V5z" />
+                    </svg>
+                  </span>
+                </div>
+              </article>
+
+              <article class="rounded-xl border border-rose-200 bg-white p-5 shadow-sm transition hover:shadow-md dark:border-rose-900/50 dark:bg-slate-800">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <p class="text-sm font-medium text-slate-600 dark:text-slate-300">Perdida por Descuentos/Cupones</p>
+                    <p class="mt-2 text-2xl font-semibold text-rose-700 dark:text-rose-300">-$3,120.00</p>
+                  </div>
+                  <span class="rounded-lg bg-rose-100 p-2 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M5 3a1 1 0 000 2h1.586l1 1H5a1 1 0 100 2h4.586l1 1H5a1 1 0 100 2h7.586l1.707 1.707a1 1 0 001.414-1.414l-10-10A1 1 0 005 3z" clip-rule="evenodd" />
+                    </svg>
+                  </span>
+                </div>
+              </article>
+
+              <article class="rounded-xl border border-cyan-200 bg-white p-5 shadow-sm transition hover:shadow-md dark:border-cyan-900/50 dark:bg-slate-800">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <p class="text-sm font-medium text-slate-600 dark:text-slate-300">Agentes Activos</p>
+                    <p class="mt-2 text-2xl font-semibold text-cyan-700 dark:text-cyan-300">142</p>
+                  </div>
+                  <span class="rounded-lg bg-cyan-100 p-2 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 2a5 5 0 00-3.873 8.161l-2.644 2.644A2 2 0 004.9 16.22l.88-.293.292.878a1 1 0 001.266.633l.878-.293.293.879a1 1 0 001.265.632l1.459-.486a2 2 0 001.343-1.343l.486-1.459a1 1 0 00-.633-1.265l-.878-.293.293-.878a1 1 0 00-.633-1.265l-.878-.293.293-.88a2 2 0 00-.415-1.95l2.644-2.644A5 5 0 1010 2zm0 2a3 3 0 110 6 3 3 0 010-6z" clip-rule="evenodd" />
+                    </svg>
+                  </span>
+                </div>
+              </article>
+
+              <article class="rounded-xl border border-amber-200 bg-white p-5 shadow-sm transition hover:shadow-md dark:border-amber-900/50 dark:bg-slate-800">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <p class="text-sm font-medium text-slate-600 dark:text-slate-300">Agentes Fallando</p>
+                    <p class="mt-2 text-2xl font-semibold text-amber-700 dark:text-amber-300">5</p>
+                  </div>
+                  <span class="rounded-lg bg-amber-100 p-2 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.72-1.36 3.486 0l6.518 11.591c.75 1.334-.213 2.99-1.742 2.99H3.48c-1.53 0-2.492-1.656-1.743-2.99L8.257 3.1zM11 13a1 1 0 10-2 0 1 1 0 002 0zm-1-6a1 1 0 00-1 1v3a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </span>
+                </div>
+              </article>
+            </div>
+
+            <div class="w-full min-h-[280px] rounded-xl border-2 border-dashed border-slate-300 bg-white/60 p-8 dark:border-slate-700 dark:bg-slate-800/40">
+              <div class="flex min-h-[220px] items-center justify-center rounded-xl border border-slate-200/80 bg-slate-50/80 text-center text-sm font-medium text-slate-500 dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-400">
+                Placeholder: Grafico de actividad semanal de agentes y facturacion
+              </div>
+            </div>
+          </section>
+
+          <section data-section="usuarios" class="content-section hidden space-y-6">
+            <div>
+              <h2 class="text-2xl font-semibold tracking-tight">Gestion de Usuarios</h2>
+              <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Usuarios registrados por plan, estado y acciones administrativas.</p>
+            </div>
+
+            <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
+              <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-700">
+                  <thead class="bg-slate-100/80 text-left text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-900/60 dark:text-slate-400">
+                    <tr>
+                      <th class="px-4 py-3">Nombre</th>
+                      <th class="px-4 py-3">Email</th>
+                      <th class="px-4 py-3">Plan</th>
+                      <th class="px-4 py-3">Estado</th>
+                      <th class="px-4 py-3 text-right">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                    <tr id="user-row-1" class="align-top">
+                      <td class="px-4 py-3 font-medium">Carlos Mendoza</td>
+                      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">carlos@acme.com</td>
+                      <td class="px-4 py-3">Basic</td>
+                      <td class="px-4 py-3"><span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">Activo</span></td>
+                      <td class="px-4 py-3 text-right">
+                        <div class="dropdown relative inline-block text-left">
+                          <button type="button" data-dropdown-target="user-menu-1" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                          <div id="user-menu-1" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                            <button type="button" data-modal-target="user-detail-modal" data-user-name="Carlos Mendoza" data-user-email="carlos@acme.com" data-user-plan="Basic" data-user-status="Activo" data-user-company="Acme Corp" class="user-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                            <button type="button" data-row-target="user-row-1" class="user-delete flex w-full rounded-md px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Eliminar</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr id="user-row-2" class="align-top">
+                      <td class="px-4 py-3 font-medium">Ana Rivas</td>
+                      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">ana@dataflow.io</td>
+                      <td class="px-4 py-3">Pro</td>
+                      <td class="px-4 py-3"><span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">Activo</span></td>
+                      <td class="px-4 py-3 text-right">
+                        <div class="dropdown relative inline-block text-left">
+                          <button type="button" data-dropdown-target="user-menu-2" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                          <div id="user-menu-2" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                            <button type="button" data-modal-target="user-detail-modal" data-user-name="Ana Rivas" data-user-email="ana@dataflow.io" data-user-plan="Pro" data-user-status="Activo" data-user-company="DataFlow Inc" class="user-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                            <button type="button" data-row-target="user-row-2" class="user-delete flex w-full rounded-md px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Eliminar</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr id="user-row-3" class="align-top">
+                      <td class="px-4 py-3 font-medium">Roberto Gomez</td>
+                      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">roberto@nexus.ai</td>
+                      <td class="px-4 py-3">Enterprise</td>
+                      <td class="px-4 py-3"><span class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">Inactivo</span></td>
+                      <td class="px-4 py-3 text-right">
+                        <div class="dropdown relative inline-block text-left">
+                          <button type="button" data-dropdown-target="user-menu-3" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                          <div id="user-menu-3" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                            <button type="button" data-modal-target="user-detail-modal" data-user-name="Roberto Gomez" data-user-email="roberto@nexus.ai" data-user-plan="Enterprise" data-user-status="Inactivo" data-user-company="Nexus SaaS" class="user-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                            <button type="button" data-row-target="user-row-3" class="user-delete flex w-full rounded-md px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Eliminar</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr id="user-row-4" class="align-top">
+                      <td class="px-4 py-3 font-medium">Sofia Chen</td>
+                      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">sofia@cybertech.net</td>
+                      <td class="px-4 py-3">Pro</td>
+                      <td class="px-4 py-3"><span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">Suspendido</span></td>
+                      <td class="px-4 py-3 text-right">
+                        <div class="dropdown relative inline-block text-left">
+                          <button type="button" data-dropdown-target="user-menu-4" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                          <div id="user-menu-4" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                            <button type="button" data-modal-target="user-detail-modal" data-user-name="Sofia Chen" data-user-email="sofia@cybertech.net" data-user-plan="Pro" data-user-status="Suspendido" data-user-company="CyberTech Ltd" class="user-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                            <button type="button" data-row-target="user-row-4" class="user-delete flex w-full rounded-md px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Eliminar</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr id="user-row-5" class="align-top">
+                      <td class="px-4 py-3 font-medium">David Torres</td>
+                      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">david@leadgenius.co</td>
+                      <td class="px-4 py-3">Basic</td>
+                      <td class="px-4 py-3"><span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">Activo</span></td>
+                      <td class="px-4 py-3 text-right">
+                        <div class="dropdown relative inline-block text-left">
+                          <button type="button" data-dropdown-target="user-menu-5" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                          <div id="user-menu-5" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                            <button type="button" data-modal-target="user-detail-modal" data-user-name="David Torres" data-user-email="david@leadgenius.co" data-user-plan="Basic" data-user-status="Activo" data-user-company="LeadGenius" class="user-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                            <button type="button" data-row-target="user-row-5" class="user-delete flex w-full rounded-md px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Eliminar</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section data-section="agentes" class="content-section hidden space-y-6">
+            <div>
+              <h2 class="text-2xl font-semibold tracking-tight">Gestion de Agentes</h2>
+              <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Operaciones sobre agentes registrados, skills asociadas y configuracion base.</p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+              <article id="agent-card-1" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 class="text-lg font-semibold">ApexScraper</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Propietario: Acme Corp</p>
+                    <span class="mt-2 inline-flex rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">Activo</span>
+                  </div>
+                  <div class="dropdown relative">
+                    <button type="button" data-dropdown-target="agent-menu-1" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                    <div id="agent-menu-1" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                      <button type="button" data-modal-target="agent-config-modal" data-agent-name="ApexScraper" data-agent-prompt="Eres ApexScraper. Prioriza precision en extraccion web B2B, evita duplicados y devuelve JSON limpio." class="agent-configure flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Configurar</button>
+                      <button type="button" data-card-target="agent-card-1" class="agent-delete flex w-full rounded-md px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Eliminar</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                  <button type="button" data-accordion-target="agent-skills-1" class="accordion-toggle flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700">
+                    Skills asociadas
+                    <span class="accordion-icon">+</span>
+                  </button>
+                  <div id="agent-skills-1" class="accordion-content max-h-0 overflow-hidden transition-all duration-300">
+                    <ul class="space-y-1 px-3 pb-3 text-sm text-slate-600 dark:text-slate-300">
+                      <li>Web Scraping</li>
+                      <li>PDF Reader</li>
+                      <li>SQL Generator</li>
+                    </ul>
+                  </div>
+                </div>
+              </article>
+
+              <article id="agent-card-2" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 class="text-lg font-semibold">LeadGenius</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Propietario: DataFlow Inc</p>
+                    <span class="mt-2 inline-flex rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">Activo</span>
+                  </div>
+                  <div class="dropdown relative">
+                    <button type="button" data-dropdown-target="agent-menu-2" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                    <div id="agent-menu-2" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                      <button type="button" data-modal-target="agent-config-modal" data-agent-name="LeadGenius" data-agent-prompt="Eres LeadGenius. Detecta leads calificados, resume contexto comercial y etiqueta prioridades." class="agent-configure flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Configurar</button>
+                      <button type="button" data-card-target="agent-card-2" class="agent-delete flex w-full rounded-md px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Eliminar</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                  <button type="button" data-accordion-target="agent-skills-2" class="accordion-toggle flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700">
+                    Skills asociadas
+                    <span class="accordion-icon">+</span>
+                  </button>
+                  <div id="agent-skills-2" class="accordion-content max-h-0 overflow-hidden transition-all duration-300">
+                    <ul class="space-y-1 px-3 pb-3 text-sm text-slate-600 dark:text-slate-300">
+                      <li>Web Scraping</li>
+                      <li>Google Calendar Sync</li>
+                    </ul>
+                  </div>
+                </div>
+              </article>
+
+              <article id="agent-card-3" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 class="text-lg font-semibold">DocuParse</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Propietario: Nexus SaaS</p>
+                    <span class="mt-2 inline-flex rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">Inactivo</span>
+                  </div>
+                  <div class="dropdown relative">
+                    <button type="button" data-dropdown-target="agent-menu-3" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                    <div id="agent-menu-3" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                      <button type="button" data-modal-target="agent-config-modal" data-agent-name="DocuParse" data-agent-prompt="Eres DocuParse. Lee documentos extensos, extrae campos clave y reporta incertidumbre cuando aplique." class="agent-configure flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Configurar</button>
+                      <button type="button" data-card-target="agent-card-3" class="agent-delete flex w-full rounded-md px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Eliminar</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                  <button type="button" data-accordion-target="agent-skills-3" class="accordion-toggle flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700">
+                    Skills asociadas
+                    <span class="accordion-icon">+</span>
+                  </button>
+                  <div id="agent-skills-3" class="accordion-content max-h-0 overflow-hidden transition-all duration-300">
+                    <ul class="space-y-1 px-3 pb-3 text-sm text-slate-600 dark:text-slate-300">
+                      <li>PDF Reader</li>
+                      <li>SQL Generator</li>
+                    </ul>
+                  </div>
+                </div>
+              </article>
+
+              <article id="agent-card-4" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 class="text-lg font-semibold">QueryBot</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Propietario: CyberTech Ltd</p>
+                    <span class="mt-2 inline-flex rounded-full bg-rose-100 px-2.5 py-1 text-xs font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">Fallando</span>
+                  </div>
+                  <div class="dropdown relative">
+                    <button type="button" data-dropdown-target="agent-menu-4" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                    <div id="agent-menu-4" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                      <button type="button" data-modal-target="agent-config-modal" data-agent-name="QueryBot" data-agent-prompt="Eres QueryBot. Genera SQL seguro, explica joins y valida que no existan operaciones destructivas." class="agent-configure flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Configurar</button>
+                      <button type="button" data-card-target="agent-card-4" class="agent-delete flex w-full rounded-md px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Eliminar</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                  <button type="button" data-accordion-target="agent-skills-4" class="accordion-toggle flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700">
+                    Skills asociadas
+                    <span class="accordion-icon">+</span>
+                  </button>
+                  <div id="agent-skills-4" class="accordion-content max-h-0 overflow-hidden transition-all duration-300">
+                    <ul class="space-y-1 px-3 pb-3 text-sm text-slate-600 dark:text-slate-300">
+                      <li>SQL Generator</li>
+                      <li>Google Calendar Sync</li>
+                    </ul>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section data-section="skills" class="content-section hidden space-y-6">
+            <div>
+              <h2 class="text-2xl font-semibold tracking-tight">Skills</h2>
+              <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Catalogo de integraciones listas para amplificar capacidades de agentes.</p>
+            </div>
+
+            <article class="rounded-xl border border-cyan-200 bg-cyan-50/70 p-4 shadow-sm dark:border-cyan-900/50 dark:bg-cyan-950/20">
+              <h3 class="text-sm font-semibold uppercase tracking-wide text-cyan-700 dark:text-cyan-300">Que es una Skill en AgentHub</h3>
+              <p class="mt-2 text-sm text-cyan-900 dark:text-cyan-100">
+                Una Skill es un modulo de integracion preconstruido que extiende a un agente con nuevas capacidades operativas,
+                como navegar sitios web, leer PDFs, generar SQL o sincronizar calendarios empresariales.
+              </p>
+            </article>
+
+            <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <article id="skill-card-1" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <h3 class="text-lg font-semibold">Web Scraping</h3>
+                    <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Extraccion estructurada de datos desde sitios web y directorios B2B.</p>
+                    <span class="mt-3 inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-700 dark:text-slate-200">3 agentes habilitados</span>
+                  </div>
+                  <div class="dropdown relative">
+                    <button type="button" data-dropdown-target="skill-menu-1" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                    <div id="skill-menu-1" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                      <button type="button" data-modal-target="skill-detail-modal" data-skill-name="Web Scraping" data-skill-json='{"timeoutMs": 12000, "maxDepth": 4, "respectRobots": true, "output": "json"}' class="skill-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                      <button type="button" data-card-target="skill-card-1" class="skill-delete flex w-full rounded-md px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Eliminar</button>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article id="skill-card-2" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <h3 class="text-lg font-semibold">PDF Reader</h3>
+                    <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Lectura semantica de documentos para extraer clausulas, montos y entidades.</p>
+                    <span class="mt-3 inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-700 dark:text-slate-200">2 agentes habilitados</span>
+                  </div>
+                  <div class="dropdown relative">
+                    <button type="button" data-dropdown-target="skill-menu-2" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                    <div id="skill-menu-2" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                      <button type="button" data-modal-target="skill-detail-modal" data-skill-name="PDF Reader" data-skill-json='{"ocr": true, "languages": ["es", "en"], "extractTables": true}' class="skill-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                      <button type="button" data-card-target="skill-card-2" class="skill-delete flex w-full rounded-md px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Eliminar</button>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article id="skill-card-3" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <h3 class="text-lg font-semibold">SQL Generator</h3>
+                    <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Generacion asistida de consultas SQL auditables sobre fuentes empresariales.</p>
+                    <span class="mt-3 inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-700 dark:text-slate-200">3 agentes habilitados</span>
+                  </div>
+                  <div class="dropdown relative">
+                    <button type="button" data-dropdown-target="skill-menu-3" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                    <div id="skill-menu-3" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                      <button type="button" data-modal-target="skill-detail-modal" data-skill-name="SQL Generator" data-skill-json='{"dialect": "postgres", "safeMode": true, "maxRows": 1000, "allowDDL": false}' class="skill-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                      <button type="button" data-card-target="skill-card-3" class="skill-delete flex w-full rounded-md px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Eliminar</button>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article id="skill-card-4" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <h3 class="text-lg font-semibold">Google Calendar Sync</h3>
+                    <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Sincronizacion de eventos y slots de disponibilidad en tiempo real.</p>
+                    <span class="mt-3 inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-700 dark:text-slate-200">2 agentes habilitados</span>
+                  </div>
+                  <div class="dropdown relative">
+                    <button type="button" data-dropdown-target="skill-menu-4" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                    <div id="skill-menu-4" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                      <button type="button" data-modal-target="skill-detail-modal" data-skill-name="Google Calendar Sync" data-skill-json='{"syncWindowDays": 30, "timezone": "America/Bogota", "createMeetLinks": true}' class="skill-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                      <button type="button" data-card-target="skill-card-4" class="skill-delete flex w-full rounded-md px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Eliminar</button>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section data-section="contratos" class="content-section hidden space-y-6">
+            <div>
+              <h2 class="text-2xl font-semibold tracking-tight">Contrataciones de Agentes</h2>
+              <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Historico de alquileres y desglose economico por contrato.</p>
+            </div>
+
+            <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
+              <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-700">
+                  <thead class="bg-slate-100/80 text-left text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-900/60 dark:text-slate-400">
+                    <tr>
+                      <th class="px-4 py-3">Cliente</th>
+                      <th class="px-4 py-3">Agente</th>
+                      <th class="px-4 py-3">Skills</th>
+                      <th class="px-4 py-3">Inicio</th>
+                      <th class="px-4 py-3">Fin</th>
+                      <th class="px-4 py-3">Total Pagado</th>
+                      <th class="px-4 py-3 text-right">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                    <tr>
+                      <td class="px-4 py-3 font-medium">Acme Corp</td>
+                      <td class="px-4 py-3">ApexScraper</td>
+                      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">Web Scraping, SQL Generator</td>
+                      <td class="px-4 py-3">2026-01-10</td>
+                      <td class="px-4 py-3">2026-07-10</td>
+                      <td class="px-4 py-3 font-medium">$2,650.00</td>
+                      <td class="px-4 py-3 text-right">
+                        <div class="dropdown relative inline-block text-left">
+                          <button type="button" data-dropdown-target="contract-menu-1" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                          <div id="contract-menu-1" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                            <button type="button" data-modal-target="contract-detail-modal" data-contract-client="Acme Corp" data-contract-agent="ApexScraper" data-contract-start="2026-01-10" data-contract-end="2026-07-10" data-contract-total="$2,650.00" data-contract-base="$1,900.00" data-contract-skills="Web Scraping:$450.00|SQL Generator:$300.00" class="contract-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td class="px-4 py-3 font-medium">DataFlow Inc</td>
+                      <td class="px-4 py-3">LeadGenius</td>
+                      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">Web Scraping, Google Calendar Sync</td>
+                      <td class="px-4 py-3">2026-02-01</td>
+                      <td class="px-4 py-3">2026-08-01</td>
+                      <td class="px-4 py-3 font-medium">$2,180.00</td>
+                      <td class="px-4 py-3 text-right">
+                        <div class="dropdown relative inline-block text-left">
+                          <button type="button" data-dropdown-target="contract-menu-2" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                          <div id="contract-menu-2" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                            <button type="button" data-modal-target="contract-detail-modal" data-contract-client="DataFlow Inc" data-contract-agent="LeadGenius" data-contract-start="2026-02-01" data-contract-end="2026-08-01" data-contract-total="$2,180.00" data-contract-base="$1,650.00" data-contract-skills="Web Scraping:$350.00|Google Calendar Sync:$180.00" class="contract-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td class="px-4 py-3 font-medium">Nexus SaaS</td>
+                      <td class="px-4 py-3">DocuParse</td>
+                      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">PDF Reader, SQL Generator</td>
+                      <td class="px-4 py-3">2026-03-12</td>
+                      <td class="px-4 py-3">2026-09-12</td>
+                      <td class="px-4 py-3 font-medium">$2,420.00</td>
+                      <td class="px-4 py-3 text-right">
+                        <div class="dropdown relative inline-block text-left">
+                          <button type="button" data-dropdown-target="contract-menu-3" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                          <div id="contract-menu-3" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                            <button type="button" data-modal-target="contract-detail-modal" data-contract-client="Nexus SaaS" data-contract-agent="DocuParse" data-contract-start="2026-03-12" data-contract-end="2026-09-12" data-contract-total="$2,420.00" data-contract-base="$1,700.00" data-contract-skills="PDF Reader:$420.00|SQL Generator:$300.00" class="contract-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td class="px-4 py-3 font-medium">CyberTech Ltd</td>
+                      <td class="px-4 py-3">QueryBot</td>
+                      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">SQL Generator</td>
+                      <td class="px-4 py-3">2026-04-20</td>
+                      <td class="px-4 py-3">2026-10-20</td>
+                      <td class="px-4 py-3 font-medium">$1,980.00</td>
+                      <td class="px-4 py-3 text-right">
+                        <div class="dropdown relative inline-block text-left">
+                          <button type="button" data-dropdown-target="contract-menu-4" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                          <div id="contract-menu-4" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                            <button type="button" data-modal-target="contract-detail-modal" data-contract-client="CyberTech Ltd" data-contract-agent="QueryBot" data-contract-start="2026-04-20" data-contract-end="2026-10-20" data-contract-total="$1,980.00" data-contract-base="$1,680.00" data-contract-skills="SQL Generator:$300.00" class="contract-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section data-section="errores" class="content-section hidden space-y-6">
+            <div>
+              <h2 class="text-2xl font-semibold tracking-tight">Log de Errores</h2>
+              <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Registro tecnico de fallas con acciones de diagnostico y resolucion.</p>
+            </div>
+
+            <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
+              <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-700">
+                  <thead class="bg-slate-100/80 text-left text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-900/60 dark:text-slate-400">
+                    <tr>
+                      <th class="px-4 py-3">Timestamp</th>
+                      <th class="px-4 py-3">Agente</th>
+                      <th class="px-4 py-3">Tipo</th>
+                      <th class="px-4 py-3">Descripcion</th>
+                      <th class="px-4 py-3">Estado</th>
+                      <th class="px-4 py-3 text-right">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                    <tr id="error-row-1" data-resolved="false">
+                      <td class="px-4 py-3">2026-08-14 08:10:22</td>
+                      <td class="px-4 py-3 font-medium">QueryBot</td>
+                      <td class="px-4 py-3"><span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">Critico</span></td>
+                      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">Timeout al ejecutar consulta compleja con subquery anidada.</td>
+                      <td class="px-4 py-3"><span class="error-status rounded-full bg-rose-100 px-2.5 py-1 text-xs font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">Pendiente</span></td>
+                      <td class="px-4 py-3 text-right">
+                        <div class="dropdown relative inline-block text-left">
+                          <button type="button" data-dropdown-target="error-menu-1" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                          <div id="error-menu-1" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-48 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                            <button type="button" data-modal-target="error-detail-modal" data-error-agent="QueryBot" data-error-time="2026-08-14 08:10:22" data-error-stack="Error: Query timeout at QueryEngine.run()\n at SQLGeneratorSkill.execute()\n at Promise.all (index 2)\n caused by: DB pool exhausted" class="error-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                            <button type="button" data-row-target="error-row-1" class="error-resolve flex w-full rounded-md px-3 py-2 text-left text-sm text-cyan-700 hover:bg-cyan-50 dark:text-cyan-300 dark:hover:bg-cyan-950/40">Marcar como resuelto</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr id="error-row-2" data-resolved="false">
+                      <td class="px-4 py-3">2026-08-14 10:52:04</td>
+                      <td class="px-4 py-3 font-medium">ApexScraper</td>
+                      <td class="px-4 py-3"><span class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">Warning</span></td>
+                      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">Respuesta 429 en fuente externa. Reintentando con backoff exponencial.</td>
+                      <td class="px-4 py-3"><span class="error-status rounded-full bg-rose-100 px-2.5 py-1 text-xs font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">Pendiente</span></td>
+                      <td class="px-4 py-3 text-right">
+                        <div class="dropdown relative inline-block text-left">
+                          <button type="button" data-dropdown-target="error-menu-2" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                          <div id="error-menu-2" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-48 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                            <button type="button" data-modal-target="error-detail-modal" data-error-agent="ApexScraper" data-error-time="2026-08-14 10:52:04" data-error-stack="Warning: HTTP 429 Too Many Requests\n endpoint: /prospects/search\n retry: 2/5\n strategy: exponential_backoff" class="error-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                            <button type="button" data-row-target="error-row-2" class="error-resolve flex w-full rounded-md px-3 py-2 text-left text-sm text-cyan-700 hover:bg-cyan-50 dark:text-cyan-300 dark:hover:bg-cyan-950/40">Marcar como resuelto</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr id="error-row-3" data-resolved="false">
+                      <td class="px-4 py-3">2026-08-15 09:11:40</td>
+                      <td class="px-4 py-3 font-medium">DocuParse</td>
+                      <td class="px-4 py-3"><span class="rounded-full bg-sky-100 px-2.5 py-1 text-xs font-medium text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">Informativo</span></td>
+                      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">OCR activado por documento escaneado de baja calidad.</td>
+                      <td class="px-4 py-3"><span class="error-status rounded-full bg-rose-100 px-2.5 py-1 text-xs font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">Pendiente</span></td>
+                      <td class="px-4 py-3 text-right">
+                        <div class="dropdown relative inline-block text-left">
+                          <button type="button" data-dropdown-target="error-menu-3" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                          <div id="error-menu-3" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-48 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                            <button type="button" data-modal-target="error-detail-modal" data-error-agent="DocuParse" data-error-time="2026-08-15 09:11:40" data-error-stack="Info: OCR fallback enabled\n pageCount: 38\n languageDetected: es\n confidence: 0.83" class="error-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                            <button type="button" data-row-target="error-row-3" class="error-resolve flex w-full rounded-md px-3 py-2 text-left text-sm text-cyan-700 hover:bg-cyan-50 dark:text-cyan-300 dark:hover:bg-cyan-950/40">Marcar como resuelto</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr id="error-row-4" data-resolved="false">
+                      <td class="px-4 py-3">2026-08-15 12:26:05</td>
+                      <td class="px-4 py-3 font-medium">LeadGenius</td>
+                      <td class="px-4 py-3"><span class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">Warning</span></td>
+                      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">Webhook de CRM respondio con latencia alta.</td>
+                      <td class="px-4 py-3"><span class="error-status rounded-full bg-rose-100 px-2.5 py-1 text-xs font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">Pendiente</span></td>
+                      <td class="px-4 py-3 text-right">
+                        <div class="dropdown relative inline-block text-left">
+                          <button type="button" data-dropdown-target="error-menu-4" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                          <div id="error-menu-4" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-48 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                            <button type="button" data-modal-target="error-detail-modal" data-error-agent="LeadGenius" data-error-time="2026-08-15 12:26:05" data-error-stack="Warning: CRM webhook latency exceeded\n endpoint: /crm/push\n latencyMs: 3840\n thresholdMs: 2500" class="error-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                            <button type="button" data-row-target="error-row-4" class="error-resolve flex w-full rounded-md px-3 py-2 text-left text-sm text-cyan-700 hover:bg-cyan-50 dark:text-cyan-300 dark:hover:bg-cyan-950/40">Marcar como resuelto</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr id="error-row-5" data-resolved="false">
+                      <td class="px-4 py-3">2026-08-16 07:42:18</td>
+                      <td class="px-4 py-3 font-medium">QueryBot</td>
+                      <td class="px-4 py-3"><span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">Critico</span></td>
+                      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">Credenciales de lectura expiradas para data warehouse.</td>
+                      <td class="px-4 py-3"><span class="error-status rounded-full bg-rose-100 px-2.5 py-1 text-xs font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">Pendiente</span></td>
+                      <td class="px-4 py-3 text-right">
+                        <div class="dropdown relative inline-block text-left">
+                          <button type="button" data-dropdown-target="error-menu-5" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                          <div id="error-menu-5" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-48 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                            <button type="button" data-modal-target="error-detail-modal" data-error-agent="QueryBot" data-error-time="2026-08-16 07:42:18" data-error-stack="Error: Authentication failed\n service: warehouse-readonly\n code: AUTH_EXPIRED\n action: rotate credentials" class="error-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                            <button type="button" data-row-target="error-row-5" class="error-resolve flex w-full rounded-md px-3 py-2 text-left text-sm text-cyan-700 hover:bg-cyan-50 dark:text-cyan-300 dark:hover:bg-cyan-950/40">Marcar como resuelto</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr id="error-row-6" data-resolved="false">
+                      <td class="px-4 py-3">2026-08-16 10:05:51</td>
+                      <td class="px-4 py-3 font-medium">ApexScraper</td>
+                      <td class="px-4 py-3"><span class="rounded-full bg-sky-100 px-2.5 py-1 text-xs font-medium text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">Informativo</span></td>
+                      <td class="px-4 py-3 text-slate-600 dark:text-slate-300">Cambio de estructura DOM detectado y parser actualizado.</td>
+                      <td class="px-4 py-3"><span class="error-status rounded-full bg-rose-100 px-2.5 py-1 text-xs font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">Pendiente</span></td>
+                      <td class="px-4 py-3 text-right">
+                        <div class="dropdown relative inline-block text-left">
+                          <button type="button" data-dropdown-target="error-menu-6" class="dropdown-toggle rounded-lg border border-slate-300 px-2.5 py-1 text-lg leading-none text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700">⋮</button>
+                          <div id="error-menu-6" class="dropdown-menu absolute right-0 z-20 mt-2 hidden w-48 rounded-lg border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                            <button type="button" data-modal-target="error-detail-modal" data-error-agent="ApexScraper" data-error-time="2026-08-16 10:05:51" data-error-stack="Info: Target DOM changed\n selectorOld: .lead-card\n selectorNew: [data-card='lead']\n parserVersion: 2.4.1" class="error-view-detail flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Ver detalle</button>
+                            <button type="button" data-row-target="error-row-6" class="error-resolve flex w-full rounded-md px-3 py-2 text-left text-sm text-cyan-700 hover:bg-cyan-50 dark:text-cyan-300 dark:hover:bg-cyan-950/40">Marcar como resuelto</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div id="user-detail-modal" data-modal class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+      <div data-modal-close class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
+      <article class="relative z-10 w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-slate-700 dark:bg-slate-900">
+        <div class="mb-4 flex items-start justify-between gap-3">
+          <div>
+            <h3 class="text-xl font-semibold">Detalle de Usuario</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">Ficha completa del registro seleccionado.</p>
+          </div>
+          <button type="button" data-modal-close class="rounded-lg border border-slate-300 px-2 py-1 text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">✕</button>
+        </div>
+        <dl class="space-y-3 text-sm">
+          <div class="rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
+            <dt class="text-slate-500 dark:text-slate-400">Nombre</dt>
+            <dd id="modal-user-name" class="font-medium">-</dd>
+          </div>
+          <div class="rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
+            <dt class="text-slate-500 dark:text-slate-400">Email</dt>
+            <dd id="modal-user-email" class="font-medium">-</dd>
+          </div>
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div class="rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
+              <dt class="text-slate-500 dark:text-slate-400">Plan</dt>
+              <dd id="modal-user-plan" class="font-medium">-</dd>
+            </div>
+            <div class="rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
+              <dt class="text-slate-500 dark:text-slate-400">Estado</dt>
+              <dd id="modal-user-status" class="font-medium">-</dd>
+            </div>
+            <div class="rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
+              <dt class="text-slate-500 dark:text-slate-400">Empresa</dt>
+              <dd id="modal-user-company" class="font-medium">-</dd>
+            </div>
+          </div>
+        </dl>
+        <div class="mt-5 flex justify-end">
+          <button type="button" data-modal-close class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-300">Cerrar</button>
+        </div>
+      </article>
+    </div>
+
+    <div id="agent-config-modal" data-modal class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+      <div data-modal-close class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
+      <article class="relative z-10 w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-slate-700 dark:bg-slate-900">
+        <div class="mb-4 flex items-start justify-between gap-3">
+          <div>
+            <h3 class="text-xl font-semibold">Configuracion de Agente</h3>
+            <p id="agent-config-subtitle" class="text-sm text-slate-600 dark:text-slate-400">System Prompt editable.</p>
+          </div>
+          <button type="button" data-modal-close class="rounded-lg border border-slate-300 px-2 py-1 text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">✕</button>
+        </div>
+        <label for="agent-system-prompt" class="mb-2 block text-sm font-medium">System Prompt</label>
+        <textarea id="agent-system-prompt" rows="8" class="w-full rounded-xl border border-slate-300 bg-slate-50 p-3 text-sm text-slate-800 focus:border-cyan-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"></textarea>
+        <div class="mt-5 flex justify-end gap-2">
+          <button type="button" data-modal-close class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-100 dark:hover:bg-slate-800">Cerrar</button>
+          <button type="button" data-modal-close class="rounded-xl bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-600">Guardar</button>
+        </div>
+      </article>
+    </div>
+
+    <div id="skill-detail-modal" data-modal class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+      <div data-modal-close class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
+      <article class="relative z-10 w-full max-w-xl rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-slate-700 dark:bg-slate-900">
+        <div class="mb-4 flex items-start justify-between gap-3">
+          <div>
+            <h3 class="text-xl font-semibold">Detalle de Skill</h3>
+            <p id="skill-detail-subtitle" class="text-sm text-slate-600 dark:text-slate-400">Parametros de configuracion en formato JSON.</p>
+          </div>
+          <button type="button" data-modal-close class="rounded-lg border border-slate-300 px-2 py-1 text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">✕</button>
+        </div>
+        <pre id="skill-detail-json" class="overflow-x-auto rounded-xl bg-slate-900 p-4 text-xs text-emerald-200"></pre>
+        <div class="mt-5 flex justify-end">
+          <button type="button" data-modal-close class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-300">Cerrar</button>
+        </div>
+      </article>
+    </div>
+
+    <div id="contract-detail-modal" data-modal class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+      <div data-modal-close class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
+      <article class="relative z-10 w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-slate-700 dark:bg-slate-900">
+        <div class="mb-4 flex items-start justify-between gap-3">
+          <div>
+            <h3 class="text-xl font-semibold">Detalle de Contrato</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">Factura y estructura de precios desglosada.</p>
+          </div>
+          <button type="button" data-modal-close class="rounded-lg border border-slate-300 px-2 py-1 text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">✕</button>
+        </div>
+
+        <div class="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
+          <div class="rounded-lg bg-slate-100 p-3 dark:bg-slate-800"><span class="text-slate-500 dark:text-slate-400">Cliente:</span> <strong id="contract-client">-</strong></div>
+          <div class="rounded-lg bg-slate-100 p-3 dark:bg-slate-800"><span class="text-slate-500 dark:text-slate-400">Agente:</span> <strong id="contract-agent">-</strong></div>
+          <div class="rounded-lg bg-slate-100 p-3 dark:bg-slate-800"><span class="text-slate-500 dark:text-slate-400">Inicio:</span> <strong id="contract-start">-</strong></div>
+          <div class="rounded-lg bg-slate-100 p-3 dark:bg-slate-800"><span class="text-slate-500 dark:text-slate-400">Fin:</span> <strong id="contract-end">-</strong></div>
+        </div>
+
+        <div class="mt-4 rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+          <h4 class="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Desglose de precios</h4>
+          <div class="mt-3 flex items-center justify-between text-sm">
+            <span>Precio base de alquiler</span>
+            <strong id="contract-base">-</strong>
+          </div>
+          <ul id="contract-skills-list" class="mt-3 space-y-2 text-sm"></ul>
+          <div class="mt-4 border-t border-slate-200 pt-3 text-right text-base font-semibold dark:border-slate-700">
+            Total Pagado: <span id="contract-total">-</span>
+          </div>
+        </div>
+
+        <div class="mt-5 flex justify-end">
+          <button type="button" data-modal-close class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-300">Cerrar</button>
+        </div>
+      </article>
+    </div>
+
+    <div id="error-detail-modal" data-modal class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+      <div data-modal-close class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
+      <article class="relative z-10 w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-slate-700 dark:bg-slate-900">
+        <div class="mb-4 flex items-start justify-between gap-3">
+          <div>
+            <h3 class="text-xl font-semibold">Stack Trace de Error</h3>
+            <p id="error-detail-subtitle" class="text-sm text-slate-600 dark:text-slate-400">Detalle tecnico del incidente.</p>
+          </div>
+          <button type="button" data-modal-close class="rounded-lg border border-slate-300 px-2 py-1 text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">✕</button>
+        </div>
+        <pre id="error-stack-content" class="overflow-x-auto rounded-xl bg-slate-900 p-4 text-xs text-amber-200"></pre>
+        <div class="mt-5 flex justify-end">
+          <button type="button" data-modal-close class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-300">Cerrar</button>
+        </div>
+      </article>
+    </div>
+
+    <script>
+      const htmlEl = document.documentElement;
+      const sidebarToggle = document.getElementById('sidebar-toggle');
+      const sidebarNav = document.getElementById('sidebar-nav');
+      const themeToggle = document.getElementById('theme-toggle');
+      const navButtons = [...document.querySelectorAll('.section-trigger')];
+      const sections = [...document.querySelectorAll('.content-section')];
+      const dropdownMenus = [...document.querySelectorAll('.dropdown-menu')];
+      const modals = [...document.querySelectorAll('[data-modal]')];
+
+      const activeNavClasses = ['bg-cyan-50', 'text-cyan-800', 'dark:bg-cyan-950/40', 'dark:text-cyan-200'];
+      const inactiveNavClasses = ['text-slate-600', 'hover:bg-slate-100', 'hover:text-slate-900', 'dark:text-slate-400', 'dark:hover:bg-slate-800', 'dark:hover:text-slate-100'];
+
+      function setActiveSection(sectionName) {
+        sections.forEach((section) => {
+          section.classList.toggle('hidden', section.dataset.section !== sectionName);
+        });
+
+        navButtons.forEach((button) => {
+          const isActive = button.dataset.sectionTarget === sectionName;
+          button.classList.remove(...activeNavClasses, ...inactiveNavClasses);
+          if (isActive) {
+            button.classList.add(...activeNavClasses);
+            button.setAttribute('aria-current', 'page');
+          } else {
+            button.classList.add(...inactiveNavClasses);
+            button.removeAttribute('aria-current');
+          }
+        });
+      }
+
+      function closeAllDropdowns() {
+        dropdownMenus.forEach((menu) => menu.classList.add('hidden'));
+      }
+
+      function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (!modal) {
+          return;
+        }
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+
+      function closeModal(modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+
+      function closeAllModals() {
+        modals.forEach((modal) => closeModal(modal));
+      }
+
+      navButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          setActiveSection(button.dataset.sectionTarget);
+          closeAllDropdowns();
+          if (window.innerWidth < 1024) {
+            sidebarNav.classList.add('hidden');
+          }
+        });
+      });
+
+      sidebarToggle.addEventListener('click', () => {
+        sidebarNav.classList.toggle('hidden');
+      });
+
+      themeToggle.addEventListener('click', () => {
+        htmlEl.classList.toggle('dark');
+      });
+
+      document.addEventListener('click', (event) => {
+        const toggle = event.target.closest('.dropdown-toggle');
+
+        if (toggle) {
+          const targetId = toggle.dataset.dropdownTarget;
+          const menu = document.getElementById(targetId);
+          const isHidden = menu.classList.contains('hidden');
+          closeAllDropdowns();
+          if (isHidden) {
+            menu.classList.remove('hidden');
+          }
+          return;
+        }
+
+        if (!event.target.closest('.dropdown')) {
+          closeAllDropdowns();
+        }
+      });
+
+      modals.forEach((modal) => {
+        modal.addEventListener('click', (event) => {
+          const shouldClose = event.target.hasAttribute('data-modal-close');
+          if (shouldClose) {
+            closeModal(modal);
+          }
+        });
+      });
+
+      document.querySelectorAll('.user-view-detail').forEach((button) => {
+        button.addEventListener('click', () => {
+          document.getElementById('modal-user-name').textContent = button.dataset.userName;
+          document.getElementById('modal-user-email').textContent = button.dataset.userEmail;
+          document.getElementById('modal-user-plan').textContent = button.dataset.userPlan;
+          document.getElementById('modal-user-status').textContent = button.dataset.userStatus;
+          document.getElementById('modal-user-company').textContent = button.dataset.userCompany;
+          openModal(button.dataset.modalTarget);
+          closeAllDropdowns();
+        });
+      });
+
+      document.querySelectorAll('.user-delete').forEach((button) => {
+        button.addEventListener('click', () => {
+          const row = document.getElementById(button.dataset.rowTarget);
+          if (row) {
+            row.remove();
+          }
+          closeAllDropdowns();
+        });
+      });
+
+      document.querySelectorAll('.accordion-toggle').forEach((button) => {
+        button.addEventListener('click', () => {
+          const content = document.getElementById(button.dataset.accordionTarget);
+          const icon = button.querySelector('.accordion-icon');
+          const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+
+          if (isOpen) {
+            content.style.maxHeight = '0px';
+            icon.textContent = '+';
+          } else {
+            content.style.maxHeight = content.scrollHeight + 'px';
+            icon.textContent = '-';
+          }
+        });
+      });
+
+      document.querySelectorAll('.agent-configure').forEach((button) => {
+        button.addEventListener('click', () => {
+          document.getElementById('agent-config-subtitle').textContent = `System Prompt actual de ${button.dataset.agentName}`;
+          document.getElementById('agent-system-prompt').value = button.dataset.agentPrompt;
+          openModal(button.dataset.modalTarget);
+          closeAllDropdowns();
+        });
+      });
+
+      document.querySelectorAll('.agent-delete').forEach((button) => {
+        button.addEventListener('click', () => {
+          const card = document.getElementById(button.dataset.cardTarget);
+          if (card) {
+            card.remove();
+          }
+          closeAllDropdowns();
+        });
+      });
+
+      document.querySelectorAll('.skill-view-detail').forEach((button) => {
+        button.addEventListener('click', () => {
+          document.getElementById('skill-detail-subtitle').textContent = `Parametros JSON de ${button.dataset.skillName}`;
+          document.getElementById('skill-detail-json').textContent = button.dataset.skillJson;
+          openModal(button.dataset.modalTarget);
+          closeAllDropdowns();
+        });
+      });
+
+      document.querySelectorAll('.skill-delete').forEach((button) => {
+        button.addEventListener('click', () => {
+          const card = document.getElementById(button.dataset.cardTarget);
+          if (card) {
+            card.remove();
+          }
+          closeAllDropdowns();
+        });
+      });
+
+      document.querySelectorAll('.contract-view-detail').forEach((button) => {
+        button.addEventListener('click', () => {
+          document.getElementById('contract-client').textContent = button.dataset.contractClient;
+          document.getElementById('contract-agent').textContent = button.dataset.contractAgent;
+          document.getElementById('contract-start').textContent = button.dataset.contractStart;
+          document.getElementById('contract-end').textContent = button.dataset.contractEnd;
+          document.getElementById('contract-total').textContent = button.dataset.contractTotal;
+          document.getElementById('contract-base').textContent = button.dataset.contractBase;
+
+          const list = document.getElementById('contract-skills-list');
+          list.innerHTML = '';
+          button.dataset.contractSkills.split('|').forEach((item) => {
+            const [skill, price] = item.split(':');
+            const li = document.createElement('li');
+            li.className = 'flex items-center justify-between rounded-lg bg-slate-100 px-3 py-2 dark:bg-slate-800';
+            li.innerHTML = `<span>${skill}</span><strong>${price}</strong>`;
+            list.appendChild(li);
+          });
+
+          openModal(button.dataset.modalTarget);
+          closeAllDropdowns();
+        });
+      });
+
+      document.querySelectorAll('.error-view-detail').forEach((button) => {
+        button.addEventListener('click', () => {
+          document.getElementById('error-detail-subtitle').textContent = `${button.dataset.errorAgent} - ${button.dataset.errorTime}`;
+          document.getElementById('error-stack-content').textContent = button.dataset.errorStack;
+          openModal(button.dataset.modalTarget);
+          closeAllDropdowns();
+        });
+      });
+
+      document.querySelectorAll('.error-resolve').forEach((button) => {
+        button.addEventListener('click', () => {
+          const row = document.getElementById(button.dataset.rowTarget);
+          if (!row) {
+            return;
+          }
+
+          row.dataset.resolved = 'true';
+          row.classList.add('opacity-60');
+          const statusBadge = row.querySelector('.error-status');
+          if (statusBadge) {
+            statusBadge.textContent = 'Resuelto';
+            statusBadge.className = 'error-status rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300';
+          }
+
+          closeAllDropdowns();
+        });
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          closeAllModals();
+          closeAllDropdowns();
+        }
+      });
+
+      setActiveSection('dashboard');
+    </script>
+  </body>
+</html>
